@@ -185,3 +185,22 @@ public void ColorStringToArray(const char[] sColorString, int aColor[3])
 	aColor[1] = StringToInt(asColors[1]);
 	aColor[2] = StringToInt(asColors[2]);
 }
+
+public void AddFilesToDownloadsTable(char configName[256])
+{
+	char ConfigFile[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, ConfigFile, sizeof(ConfigFile), "configs/%s", configName);
+	Handle hFile = OpenFile(ConfigFile, "r");
+	if (hFile)
+	{
+		char filename[PLATFORM_MAX_PATH];
+		while (!IsEndOfFile(hFile) && ReadFileLine(hFile, filename, PLATFORM_MAX_PATH))
+		{
+			if (TrimString(filename) > 2 && IsCharAlpha(filename[0]))
+				AddFileToDownloadsTable(filename);
+		}
+		CloseHandle(hFile);
+	}
+	else
+		LogError("Download list file missing: %s", ConfigFile);
+}
