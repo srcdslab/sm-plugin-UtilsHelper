@@ -4,10 +4,11 @@
 
 #pragma semicolon 1
 
-#define CONFIG_PATH				"configs/steam.cfg"
-#define	CONFIG_KV_NAME			"steam"
-#define	CONFIG_KV_API_NAME		"api"
-#define CONFIG_KV_API_KEY_NAME	"key"
+#define CONFIG_PATH					"configs/steam.cfg"
+#define	CONFIG_KV_NAME				"steam"
+#define	CONFIG_KV_API_NAME			"api"
+#define CONFIG_KV_API_KEY_NAME		"key"
+#define CONFIG_KV_API_ENDPOINT_NAME	"endpoint"
 
 stock void GetConfigKvSteam(KeyValues &kv, const char[] sConfigPath = CONFIG_PATH, const char[] sKvName = CONFIG_KV_NAME)
 {
@@ -32,7 +33,8 @@ stock void GetConfigKvSteam(KeyValues &kv, const char[] sConfigPath = CONFIG_PAT
 
 		WriteFileLine(hFile, "\t\"%s\"", CONFIG_KV_API_NAME);
 		WriteFileLine(hFile, "\t{");
-		WriteFileLine(hFile, "\t\t\"key\"\t\"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"");
+		WriteFileLine(hFile, "\t\t\"endpoint\"\t\"api.steampowered.com\"");
+		WriteFileLine(hFile, "\t\t\"key\"\t\t\"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"");
 		WriteFileLine(hFile, "\t}");
 
 		WriteFileLine(hFile, "}");
@@ -41,6 +43,31 @@ stock void GetConfigKvSteam(KeyValues &kv, const char[] sConfigPath = CONFIG_PAT
 	}
 
 	kv.ImportFromFile(sFile);
+}
+
+stock bool GetSteamAPIEndpoint(char[] sSteamAPIEndpoint, int size)
+{
+	static char sSteamAPIEndpointLoaded[255] = "";
+
+	if (sSteamAPIEndpointLoaded[0] == '\0')
+	{
+		KeyValues kv;
+		GetConfigKvSteam(kv);
+
+		if (!kv.JumpToKey(CONFIG_KV_API_NAME))
+		{
+			delete kv;
+			return false;
+		}
+
+		kv.GetString(CONFIG_KV_API_ENDPOINT_NAME, sSteamAPIEndpointLoaded, sizeof(sSteamAPIEndpointLoaded), "");
+
+		delete kv;
+	}
+
+	strcopy(sSteamAPIEndpoint, size, sSteamAPIEndpointLoaded);
+
+	return true;
 }
 
 stock bool GetSteamAPIKey(char[] sSteamAPIKey, int size)
