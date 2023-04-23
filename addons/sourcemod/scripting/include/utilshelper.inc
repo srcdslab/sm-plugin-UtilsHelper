@@ -213,6 +213,17 @@ public void ColorStringToArray(const char[] sColorString, int aColor[3])
 	aColor[2] = StringToInt(asColors[2]);
 }
 
+public void RGBAColorStringToArray(const char[] sColorString, int aColor[4])
+{
+	char asColors[5][5];
+	ExplodeString(sColorString, " ", asColors, sizeof(asColors), sizeof(asColors[]));
+
+	aColor[0] = StringToInt(asColors[0]);
+	aColor[1] = StringToInt(asColors[1]);
+	aColor[2] = StringToInt(asColors[2]);
+	aColor[3] = StringToInt(asColors[3]);
+}
+
 public void AddFilesToDownloadsTable(char configName[256])
 {
 	char ConfigFile[PLATFORM_MAX_PATH];
