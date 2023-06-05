@@ -242,3 +242,15 @@ public void AddFilesToDownloadsTable(char configName[256])
 	else
 		LogError("Download list file missing: %s", ConfigFile);
 }
+
+stock int GetEdictsCount()
+{
+	int iCount = 0;
+	for (int entity = 1; entity <= MAXENTITIES; entity++)
+	{
+		if(IsValidEdict(entity))
+			iCount++;
+	}
+	
+	return iCount;
+}
