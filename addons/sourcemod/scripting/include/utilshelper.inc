@@ -4,6 +4,7 @@
 
 #pragma semicolon 1
 
+#define Utils_VERSION 				"1.1"
 #define CONFIG_PATH					"configs/steam.cfg"
 #define	CONFIG_KV_NAME				"steam"
 #define	CONFIG_KV_API_NAME			"api"
@@ -246,6 +247,7 @@ public void AddFilesToDownloadsTable(char configName[256])
 stock int GetEdictsCount()
 {
 	int iCount = 0;
+	int MAXENTITIES = GetMaxEntities();
 	for (int entity = 1; entity <= MAXENTITIES; entity++)
 	{
 		if(IsValidEdict(entity))
@@ -253,4 +255,12 @@ stock int GetEdictsCount()
 	}
 	
 	return iCount;
+}
+
+void StringToLowerCase(char[] input)
+{
+    for (int i = 0; i < strlen(input); i++)
+    {
+        input[i] = CharToLower(input[i]);
+    }
 }
