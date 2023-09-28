@@ -257,7 +257,7 @@ stock int GetEdictsCount()
 	return iCount;
 }
 
-void StringToLowerCase(char[] input)
+stock void StringToLowerCase(char[] input)
 {
     for (int i = 0; i < strlen(input); i++)
     {
