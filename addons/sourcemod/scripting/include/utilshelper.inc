@@ -4,10 +4,10 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION 				"1.1"
-#define CONFIG_PATH					"configs/steam.cfg"
-#define	CONFIG_KV_NAME				"steam"
-#define	CONFIG_KV_API_NAME			"api"
+#define Utils_VERSION 			"1.2"
+#define CONFIG_PATH			"configs/steam.cfg"
+#define	CONFIG_KV_NAME			"steam"
+#define	CONFIG_KV_API_NAME		"api"
 #define CONFIG_KV_API_KEY_NAME		"key"
 #define CONFIG_KV_API_ENDPOINT_NAME	"endpoint"
 
@@ -262,5 +262,13 @@ stock void StringToLowerCase(char[] input)
     for (int i = 0; i < strlen(input); i++)
     {
         input[i] = CharToLower(input[i]);
+    }
+}
+
+stock void StringToUpperCase(char[] input)
+{
+    for (int i = 0; i < strlen(input); i++)
+    {
+        input[i] = CharToUpper(input[i]);
     }
 }
