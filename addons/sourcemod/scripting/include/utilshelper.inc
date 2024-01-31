@@ -265,18 +265,10 @@ stock void StringToLowerCase(char[] input)
     }
 }
 
-stock int GetCurrentMapSize(bool bInMB = true)
+stock int GetCurrentMapSize()
 {
 	char sCurrentMap[PLATFORM_MAX_PATH], sPath[PLATFORM_MAX_PATH];
 	GetCurrentMap(sCurrentMap, sizeof(sCurrentMap));
 	FormatEx(sPath, sizeof(sPath), "maps/%s.bsp", sCurrentMap);
-
-	int iMapSize = FileSize(sPath);
-	if (iMapSize == -1)
-		return -1;
-
-	if (bInMB)
-		return iMapSize / 1048576;
-	else
-		return iMapSize;
+	return FileSize(sPath);
 }
