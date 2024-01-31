@@ -264,3 +264,11 @@ stock void StringToLowerCase(char[] input)
         input[i] = CharToLower(input[i]);
     }
 }
+
+stock int GetCurrentMapSize()
+{
+	char sCurrentMap[PLATFORM_MAX_PATH], sPath[PLATFORM_MAX_PATH];
+	GetCurrentMap(sCurrentMap, sizeof(sCurrentMap));
+	FormatEx(sPath, sizeof(sPath), "maps/%s.bsp", sCurrentMap);
+	return FileSize(sPath);
+}
