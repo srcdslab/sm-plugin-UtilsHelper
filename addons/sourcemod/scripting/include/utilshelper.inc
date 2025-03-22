@@ -4,7 +4,7 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION 				"1.1"
+#define Utils_VERSION 				"1.2"
 #define CONFIG_PATH					"configs/steam.cfg"
 #define	CONFIG_KV_NAME				"steam"
 #define	CONFIG_KV_API_NAME			"api"
@@ -204,7 +204,7 @@ stock void AddMenuItemTranslated(Menu menu, const char[] info, const char[] disp
 	menu.AddItem(info, buffer);
 }
 
-public void ColorStringToArray(const char[] sColorString, int aColor[3])
+stock void ColorStringToArray(const char[] sColorString, int aColor[3])
 {
 	char asColors[4][4];
 	ExplodeString(sColorString, " ", asColors, sizeof(asColors), sizeof(asColors[]));
@@ -214,7 +214,7 @@ public void ColorStringToArray(const char[] sColorString, int aColor[3])
 	aColor[2] = StringToInt(asColors[2]);
 }
 
-public void RGBAColorStringToArray(const char[] sColorString, int aColor[4])
+stock void RGBAColorStringToArray(const char[] sColorString, int aColor[4])
 {
 	char asColors[5][5];
 	ExplodeString(sColorString, " ", asColors, sizeof(asColors), sizeof(asColors[]));
@@ -225,7 +225,7 @@ public void RGBAColorStringToArray(const char[] sColorString, int aColor[4])
 	aColor[3] = StringToInt(asColors[3]);
 }
 
-public void AddFilesToDownloadsTable(char configName[256])
+stock void AddFilesToDownloadsTable(char configName[256])
 {
 	char ConfigFile[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, ConfigFile, sizeof(ConfigFile), "configs/%s", configName);
@@ -259,10 +259,13 @@ stock int GetEdictsCount()
 
 stock void StringToLowerCase(char[] input)
 {
-    for (int i = 0; i < strlen(input); i++)
-    {
-        input[i] = CharToLower(input[i]);
-    }
+	int i, x;
+	while ((x = str[i]) != 0)
+	{
+		if ('A' <= x <= 'Z')
+			str[i] += ('a' - 'A');
+		++i;
+	}
 }
 
 stock int GetCurrentMapSize()
