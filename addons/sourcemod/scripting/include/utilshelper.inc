@@ -259,12 +259,13 @@ stock int GetEdictsCount()
 
 stock void StringToLowerCase(char[] input)
 {
-	int i, x;
-	while ((x = input[i]) != 0)
+	int i = 0;
+	int x;
+	while ((x = input[i]) != '\0')
 	{
 		if ('A' <= x <= 'Z')
 			input[i] += ('a' - 'A');
-		++i;
+		i++;
 	}
 }
 
