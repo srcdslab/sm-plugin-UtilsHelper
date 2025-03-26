@@ -4,7 +4,7 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION 				"1.2"
+#define Utils_VERSION 				"1.3"
 #define CONFIG_PATH					"configs/steam.cfg"
 #define	CONFIG_KV_NAME				"steam"
 #define	CONFIG_KV_API_NAME			"api"
@@ -265,6 +265,18 @@ stock void StringToLowerCase(char[] input)
 	{
 		if ('A' <= x <= 'Z')
 			input[i] += ('a' - 'A');
+		i++;
+	}
+}
+
+stock void StringToUpperCase(char[] input)
+{
+	int i = 0;
+	int x;
+	while ((x = input[i]) != '\0')
+	{
+		if ('a' <= x <= 'z')
+			input[i] -= ('a' - 'A');
 		i++;
 	}
 }
