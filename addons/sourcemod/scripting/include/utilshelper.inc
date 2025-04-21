@@ -4,7 +4,7 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION 				"1.3"
+#define Utils_VERSION 				"1.3.1"
 #define CONFIG_PATH					"configs/steam.cfg"
 #define	CONFIG_KV_NAME				"steam"
 #define	CONFIG_KV_API_NAME			"api"
@@ -279,6 +279,22 @@ stock void StringToUpperCase(char[] input)
 			input[i] -= ('a' - 'A');
 		i++;
 	}
+}
+
+public bool IsCharEqualIgnoreCase(int a, int b)
+{
+	if (a == b)
+		return true;
+
+	int toLower = ('A' <= b && b <= 'Z') ? (b + ('a' - 'A')) : b;
+	if (a == toLower)
+		return true;
+
+	int toUpper = ('a' <= b && b <= 'z') ? (b - ('a' - 'A')) : b;
+	if (a == toUpper)
+		return true;
+
+	return false;
 }
 
 stock int GetCurrentMapSize()
