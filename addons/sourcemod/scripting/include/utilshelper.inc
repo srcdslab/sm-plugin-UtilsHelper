@@ -4,12 +4,12 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION 				"1.3.1"
-#define CONFIG_PATH					"configs/steam.cfg"
-#define	CONFIG_KV_NAME				"steam"
-#define	CONFIG_KV_API_NAME			"api"
-#define CONFIG_KV_API_KEY_NAME		"key"
-#define CONFIG_KV_API_ENDPOINT_NAME	"endpoint"
+#define Utils_VERSION               "1.3.2"
+#define CONFIG_PATH                 "configs/steam.cfg"
+#define	CONFIG_KV_NAME              "steam"
+#define	CONFIG_KV_API_NAME          "api"
+#define CONFIG_KV_API_KEY_NAME      "key"
+#define CONFIG_KV_API_ENDPOINT_NAME "endpoint"
 
 stock void GetConfigKvSteam(KeyValues &kv, const char[] sConfigPath = CONFIG_PATH, const char[] sKvName = CONFIG_KV_NAME)
 {
@@ -303,4 +303,39 @@ stock int GetCurrentMapSize()
 	GetCurrentMap(sCurrentMap, sizeof(sCurrentMap));
 	FormatEx(sPath, sizeof(sPath), "maps/%s.bsp", sCurrentMap);
 	return FileSize(sPath);
+}
+
+/**
+ * Efficiently extracts the display name from a map path without file system operations.
+ * 
+ * @param map           Map path to process
+ * @param displayName   Buffer to store the display name
+ * @param maxlen        Maximum length of the buffer
+ * @return              True if successful, false otherwise
+ */
+stock bool GetMapDisplayNameOptimized(const char[] map, char[] displayName, int maxlen)
+{
+	if (map[0] == '\0')
+		return false;
+
+	char normalizedPath[PLATFORM_MAX_PATH];
+	char fileName[PLATFORM_MAX_PATH];
+
+	strcopy(normalizedPath, sizeof(normalizedPath), map);
+	ReplaceString(normalizedPath, sizeof(normalizedPath), "\\", "/", true);
+
+	int ilastSlashPos = FindCharInString(normalizedPath, '/', true);
+	// If no slash found, use the entire path as filename
+	if (ilastSlashPos == -1)
+		strcopy(fileName, sizeof(fileName), normalizedPath);
+	else
+		strcopy(fileName, sizeof(fileName), normalizedPath[ilastSlashPos+1]);
+
+	// Remove .ugc extension for workshop maps
+	int iExtPos = StrContains(fileName, ".ugc", true);
+	if (iExtPos != -1)
+		fileName[iExtPos] = 0;
+
+	strcopy(displayName, maxlen, fileName);
+	return true;
 }
