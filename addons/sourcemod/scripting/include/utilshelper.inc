@@ -4,7 +4,7 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION               "1.3.2"
+#define Utils_VERSION               "1.3.3"
 #define CONFIG_PATH                 "configs/steam.cfg"
 #define	CONFIG_KV_NAME              "steam"
 #define	CONFIG_KV_API_NAME          "api"
@@ -20,27 +20,27 @@ stock void GetConfigKvSteam(KeyValues &kv, const char[] sConfigPath = CONFIG_PAT
 
 	if (!FileExists(sFile))
 	{
-		Handle hFile = OpenFile(sFile, "w");
+		File hFile = OpenFile(sFile, "w");
 
-		if (hFile == INVALID_HANDLE)
+		if (hFile == null)
 		{
 			SetFailState("[Steam] Could not create %s", sFile);
 			delete kv;
 			return;
 		}
 
-		WriteFileLine(hFile, "\"%s\"", CONFIG_KV_NAME);
-		WriteFileLine(hFile, "{");
+		hFile.WriteLine("\"%s\"", CONFIG_KV_NAME);
+		hFile.WriteLine("{");
 
-		WriteFileLine(hFile, "\t\"%s\"", CONFIG_KV_API_NAME);
-		WriteFileLine(hFile, "\t{");
-		WriteFileLine(hFile, "\t\t\"endpoint\"\t\"api.steampowered.com\"");
-		WriteFileLine(hFile, "\t\t\"key\"\t\t\"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"");
-		WriteFileLine(hFile, "\t}");
+		hFile.WriteLine("\t\"%s\"", CONFIG_KV_API_NAME);
+		hFile.WriteLine("\t{");
+		hFile.WriteLine("\t\t\"endpoint\"\t\"api.steampowered.com\"");
+		hFile.WriteLine("\t\t\"key\"\t\t\"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\"");
+		hFile.WriteLine("\t}");
 
-		WriteFileLine(hFile, "}");
+		hFile.WriteLine("}");
 
-		CloseHandle(hFile);
+		delete hFile;
 	}
 
 	kv.ImportFromFile(sFile);
@@ -229,16 +229,16 @@ stock void AddFilesToDownloadsTable(char configName[256])
 {
 	char ConfigFile[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, ConfigFile, sizeof(ConfigFile), "configs/%s", configName);
-	Handle hFile = OpenFile(ConfigFile, "r");
+	File hFile = OpenFile(ConfigFile, "r");
 	if (hFile)
 	{
 		char filename[PLATFORM_MAX_PATH];
-		while (!IsEndOfFile(hFile) && ReadFileLine(hFile, filename, PLATFORM_MAX_PATH))
+		while (!hFile.EndOfFile() && hFile.ReadLine(filename, PLATFORM_MAX_PATH))
 		{
 			if (TrimString(filename) > 2 && IsCharAlpha(filename[0]))
 				AddFileToDownloadsTable(filename);
 		}
-		CloseHandle(hFile);
+		delete hFile;
 	}
 	else
 		LogError("Download list file missing: %s", ConfigFile);
