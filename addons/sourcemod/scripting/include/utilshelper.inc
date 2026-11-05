@@ -4,7 +4,7 @@
 
 #pragma semicolon 1
 
-#define Utils_VERSION               "1.3.3"
+#define Utils_VERSION               "1.3.4"
 #define CONFIG_PATH                 "configs/steam.cfg"
 #define	CONFIG_KV_NAME              "steam"
 #define	CONFIG_KV_API_NAME          "api"
@@ -246,15 +246,9 @@ stock void AddFilesToDownloadsTable(char configName[256])
 
 stock int GetEdictsCount()
 {
-	int iCount = 0;
-	int MAXENTITIES = GetMaxEntities();
-	for (int entity = 1; entity <= MAXENTITIES; entity++)
-	{
-		if(IsValidEdict(entity))
-			iCount++;
-	}
-	
-	return iCount;
+	// Edicts in use, without worldspawn (edict 0) which the IsValidEdict() loop over
+	// every edict used to skip
+	return GetEntityCount() - 1;
 }
 
 stock void StringToLowerCase(char[] input)
